@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,10 +8,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EmbeddedStockByPros.Models;
 
+
 namespace EmbeddedStockByPros.Controllers
 {
     public class ComponentsController : Controller
     {
+
         private readonly DatabaseContext _context;
 
         public ComponentsController(DatabaseContext context)
@@ -21,6 +24,7 @@ namespace EmbeddedStockByPros.Controllers
         // GET: Components
         public async Task<IActionResult> Index()
         {
+           
             return View(await _context.Components.ToListAsync());
         }
 
@@ -45,7 +49,16 @@ namespace EmbeddedStockByPros.Controllers
         // GET: Components/Create
         public IActionResult Create()
         {
+            //var tmp = 
+            //IList<string> myList = new List<string>();
+
+            //myList.Add("Hep");
+            // myList; 
+            ViewData["ComponentTypes"] = _context.ComponentTypes.Select(data => data.ComponentTypeId).ToList();
+
+
             return View();
+
         }
 
         // POST: Components/Create

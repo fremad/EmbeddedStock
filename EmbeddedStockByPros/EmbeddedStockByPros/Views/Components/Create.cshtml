@@ -4,6 +4,11 @@
     ViewData["Title"] = "Create";
 }
 
+@foreach (var tmp in ViewData["ComponentTypes"] as IList<long>)
+{
+    <h1> @tmp </h1>
+}
+
 <h2>Create</h2>
 
 <h4>Component</h4>
@@ -14,7 +19,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ComponentTypeId" class="control-label"></label>
-                <select asp-for="ComponentTypeId" class ="form-control" asp-items="ViewBag.ComponentTypeId"></select>
+                <select asp-for="ComponentTypeId"  class ="form-control" asp-items="ViewBag.ComponentTypeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ComponentNumber" class="control-label"></label>
