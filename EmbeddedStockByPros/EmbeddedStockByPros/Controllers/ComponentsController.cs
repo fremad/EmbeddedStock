@@ -49,12 +49,18 @@ namespace EmbeddedStockByPros.Controllers
         // GET: Components/Create
         public IActionResult Create()
         {
-            //var tmp = 
-            //IList<string> myList = new List<string>();
 
-            //myList.Add("Hep");
-            // myList; 
-            ViewData["ComponentTypes"] = _context.ComponentTypes.Select(data => data.ComponentTypeId).ToList();
+            //TODO make this god forsaken code into a viewmodel
+            var tmp = _context.ComponentTypes.Select(data => data.ComponentTypeId).ToList();
+            
+            var hep = new List<SelectListItem>();
+
+            foreach (var item in tmp)
+            {
+                hep.Add(new SelectListItem{ Value = item.ToString(), Text = item.ToString() });
+            }
+
+            ViewBag.ComponentTypeId = hep;
 
 
             return View();
