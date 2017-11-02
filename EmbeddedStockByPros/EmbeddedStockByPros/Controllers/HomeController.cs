@@ -29,11 +29,6 @@ namespace EmbeddedStockByPros.Controllers
             return View();
         }
 
-        public IActionResult GoToComponentsPage()
-        {
-            return RedirectToAction("Index", "Components");
-        }
-
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
