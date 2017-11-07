@@ -36,9 +36,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.WikiLink)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AdminComment)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdminComment)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.CategoryComponenttypebindings)
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -72,6 +75,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.AdminComment)
             </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.CategoryComponenttypebindings.Count)
+            </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ComponentTypeId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ComponentTypeId">Details</a> |

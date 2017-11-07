@@ -10,12 +10,11 @@ namespace EmbeddedStockByPros.Models
     {
         public Category()
         {
-            ComponentTypes = new List<ComponentType>();
+            CategoryComponenttypebindings = new List<CategoryComponenttypebinding>();
         }
 
         public int CategoryId { get; set; }
         public string Name { get; set; }
-        [NotMapped]
-        public ICollection<ComponentType> ComponentTypes { get; protected set; }
+        public ICollection<CategoryComponenttypebinding> CategoryComponenttypebindings { get; protected set; }
     }
 }

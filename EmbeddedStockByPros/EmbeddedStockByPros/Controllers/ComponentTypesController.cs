@@ -45,6 +45,10 @@ namespace EmbeddedStockByPros.Controllers
         // GET: ComponentTypes/Create
         public IActionResult Create()
         {
+
+            //TODO make this god forsaken code into a viewmodel
+            ViewBag.categories = _context.Categories.Select(data => data.Name).ToList();
+
             return View();
         }
 
