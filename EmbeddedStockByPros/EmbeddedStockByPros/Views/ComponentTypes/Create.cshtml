@@ -1,4 +1,4 @@
-﻿@model EmbeddedStockByPros.Models.ComponentType
+﻿@model EmbeddedStockByPros.ViewModels.ComponenttypeVM
 
 @{
     ViewData["Title"] = "Create";
@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="form-group">
                 <label asp-for="ComponentName" class="control-label"></label>
                 <input asp-for="ComponentName" class="form-control" />
@@ -26,27 +26,13 @@
                 <label asp-for="ComponentInfo" class="control-label"></label>
                 <input asp-for="ComponentInfo" class="form-control" />
                 <span asp-validation-for="ComponentInfo" class="text-danger"></span>
-            </div>
+            </div> 
             <div class="form-group">
-                <table>
-                    <tr>
-                        <th>
-                            Category
-                        </th>
-                        <th></th>
-                    </tr>
-                    @foreach (var item in ViewBag.categories)
-                    {
-                        <td>@item</td>
-                    }
-                </table>
+                <label asp-for="Categories"></label>
+                <input asp-for="Categories" class="form-control" />
+                <span asp-validation-for="Categories" class="text-danger"></span>
             </div>
-            
-                @*<div class="form-group">
-                <label asp-for="CategoryComponenttypebindings" class="control-label"></label>
-                <input asp-for="CategoryComponenttypebindings" class="form-control" />
-                <span asp-validation-for="CategoryComponenttypebindings" class="text-danger"></span>
-            </div>*@
+   
             <div class="form-group">
                 <label asp-for="Location" class="control-label"></label>
                 <input asp-for="Location" class="form-control" />

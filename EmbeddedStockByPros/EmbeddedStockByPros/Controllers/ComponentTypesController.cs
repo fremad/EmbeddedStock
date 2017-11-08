@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EmbeddedStockByPros.Models;
+using EmbeddedStockByPros.ViewModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace EmbeddedStockByPros.Controllers
 {
@@ -57,15 +59,63 @@ namespace EmbeddedStockByPros.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ComponentTypeId,ComponentName,ComponentInfo,Location,Status,Datasheet,ImageUrl,Manufacturer,WikiLink,AdminComment")] ComponentType componentType)
+        public async Task<IActionResult> Create(ComponenttypeVM componentType)
         {
-            if (ModelState.IsValid)
+
+
+            var catlist = componentType.Categories.Split(",");
+
+                var tmp = new ComponentType();
+
+                tmp.ComponentName = componentType.ComponentName;
+                tmp.AdminComment = componentType.AdminComment;
+                tmp.Datasheet = componentType.Datasheet;
+                tmp.ComponentInfo = componentType.ComponentInfo;
+                tmp.ImageUrl = componentType.ImageUrl;
+                tmp.Location = componentType.Location;
+                tmp.Status = componentType.Status;
+                tmp.Manufacturer = componentType.Manufacturer;
+                tmp.WikiLink = componentType.WikiLink;
+
+            _context.Add(tmp);
+            await _context.SaveChangesAsync();
+
+            //long Id = tmp.ComponentTypeId;
+
+            ICollection<Category> categories = new List<Category>();
+
+            foreach (var item in catlist)
             {
-                _context.Add(componentType);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var cool = _context.Categories.Select(a => a).Where(a => a.Name == item).ToList();
+
+                if (!cool.Any())
+                {
+                    var aCat = new Category
+                    {
+                        Name = item,
+                    };
+
+                    categories.Add(aCat);
+                    _context.Add(aCat);
+                }
             }
-            return View(componentType);
+            await _context.SaveChangesAsync();
+
+
+            var free = new CategoryComponenttypebinding()
+            {
+                CategoryId = categories.First().CategoryId,
+                ComponentTypeId = tmp.ComponentTypeId
+            };
+
+            tmp.CategoryComponenttypebindings.Add(free);
+
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+            
+            //return View(componentType);
         }
 
         // GET: ComponentTypes/Edit/5
