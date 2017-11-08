@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EmbeddedStockByPros.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmbeddedStockByPros.Controllers
 {
@@ -20,7 +21,27 @@ namespace EmbeddedStockByPros.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Components.ToList());
+            var viewlist = new List<ComponentType>();
+
+            var hewoui = _context.CategoryComponenttypebindings.ToList();
+
+            var tmp = _context.ComponentTypes
+                .Include(data => data.CategoryComponenttypebindings)
+                .ThenInclude(data => data.Category)
+                .ToList();
+
+            foreach (var item in tmp)
+            {
+                foreach (var item2 in item.CategoryComponenttypebindings)
+                {
+                    if (item2.Category.Name == "Arduino")
+                    {
+                        viewlist.Add(item);
+                    }
+                }
+            }
+
+            return View(viewlist);
         }
 
         public IActionResult About()

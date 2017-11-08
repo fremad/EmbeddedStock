@@ -62,7 +62,6 @@ namespace EmbeddedStockByPros.Controllers
         public async Task<IActionResult> Create(ComponenttypeVM componentType)
         {
 
-
             var catlist = componentType.Categories.Split(",");
 
                 var tmp = new ComponentType();
@@ -84,9 +83,11 @@ namespace EmbeddedStockByPros.Controllers
 
             ICollection<Category> categories = new List<Category>();
 
+            List<Category> cool = new List<Category>();
+
             foreach (var item in catlist)
             {
-                var cool = _context.Categories.Select(a => a).Where(a => a.Name == item).ToList();
+                cool = _context.Categories.Select(a => a).Where(a => a.Name == item).ToList();
 
                 if (!cool.Any())
                 {
@@ -98,24 +99,42 @@ namespace EmbeddedStockByPros.Controllers
                     categories.Add(aCat);
                     _context.Add(aCat);
                 }
+                else
+                {
+                    //TODO lol :) hacks
+                    categories.Add(cool.First());
+                }
+
             }
             await _context.SaveChangesAsync();
 
-
-            var free = new CategoryComponenttypebinding()
+            foreach (var item in categories)
             {
-                CategoryId = categories.First().CategoryId,
-                ComponentTypeId = tmp.ComponentTypeId
-            };
+                var free = new CategoryComponenttypebinding()
+                {
+                    CategoryId = item.CategoryId,
+                    ComponentTypeId = tmp.ComponentTypeId,
+                    Category = item,
+                    ComponentType = tmp
+                };
 
-            tmp.CategoryComponenttypebindings.Add(free);
+                _context.Add(free);
 
+                tmp.CategoryComponenttypebindings.Add(free);
+                item.CategoryComponenttypebindings.Add(free);
+
+                //TODO check if it works without
+                _context.Entry(item).State = EntityState.Modified;
+                _context.Update(item);
+            }
+
+            _context.Entry(tmp).Collection("CategoryComponenttypebindings").IsModified = true;
+     
 
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
             
-            //return View(componentType);
         }
 
         // GET: ComponentTypes/Edit/5
