@@ -96,6 +96,20 @@ namespace EmbeddedStockByPros.Controllers
             {
                 return NotFound();
             }
+
+            //TODO make this god forsaken code into a viewmodel
+            var tmp = _context.ComponentTypes.Select(data => data.ComponentTypeId).ToList();
+
+            var hep = new List<SelectListItem>();
+
+            foreach (var item in tmp)
+            {
+                hep.Add(new SelectListItem { Value = item.ToString(), Text = item.ToString() });
+            }
+
+            ViewBag.ComponentTypeId = hep;
+
+
             return View(component);
         }
 
