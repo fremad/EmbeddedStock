@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -62,6 +64,28 @@ namespace EmbeddedStockByPros.Controllers
         public async Task<IActionResult> Create(ComponenttypeVM componentType)
         {
 
+            //todo rename kjal
+            var kjal = new ESImage();
+
+            if (componentType.Image.Length > 0)
+            {
+                var fileName = ContentDispositionHeaderValue.Parse(componentType.Image.ContentDisposition).FileName.Trim('"');
+
+                using (var reader = new StreamReader(componentType.Image.OpenReadStream()))
+                {
+                    string contentAsString = reader.ReadToEnd();
+                    byte[] bytes = new byte[contentAsString.Length * sizeof(char)];
+                    System.Buffer.BlockCopy(contentAsString.ToCharArray(), 0, bytes, 0, bytes.Length);
+
+                    kjal.ImageData = bytes;
+                }
+
+            }
+            
+            kjal.ImageMimeType = "image/png";
+
+
+
             var catlist = componentType.Categories.Split(",");
 
                 var tmp = new ComponentType();
@@ -75,6 +99,7 @@ namespace EmbeddedStockByPros.Controllers
                 tmp.Status = componentType.Status;
                 tmp.Manufacturer = componentType.Manufacturer;
                 tmp.WikiLink = componentType.WikiLink;
+                tmp.Image = kjal;
 
             _context.Add(tmp);
             await _context.SaveChangesAsync();

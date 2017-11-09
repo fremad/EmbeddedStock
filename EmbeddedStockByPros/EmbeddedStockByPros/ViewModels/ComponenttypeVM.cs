@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbeddedStockByPros.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace EmbeddedStockByPros.ViewModels
 {
@@ -17,8 +18,8 @@ namespace EmbeddedStockByPros.ViewModels
         public string Manufacturer { get; set; }
         public string WikiLink { get; set; }
         public string AdminComment { get; set; }
-        public virtual ESImage Image { get; set; }
-        //public ICollection<Component> Components { get; protected set; }
+        public IFormFile Image { get; set; }
+       
         public string Categories { get; set; }
     }
 }
