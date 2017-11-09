@@ -68,7 +68,7 @@ namespace EmbeddedStockByPros.Controllers
             //todo rename kjal
             var kjal = new ESImage();
 
-            if (componentType.Image.Length > 0)
+            if (componentType.Image != null && componentType.Image.Length > 0)
             {
                 var fileName = ContentDispositionHeaderValue.Parse(componentType.Image.ContentDisposition).FileName.Trim('"');
 
@@ -86,10 +86,8 @@ namespace EmbeddedStockByPros.Controllers
             kjal.ImageMimeType = "image/png";
 
 
-
-            var catlist = componentType.Categories.Split(",");
-
-                var tmp = new ComponentType();
+           
+            var tmp = new ComponentType();
 
                 tmp.ComponentName = componentType.ComponentName;
                 tmp.AdminComment = componentType.AdminComment;
@@ -110,27 +108,31 @@ namespace EmbeddedStockByPros.Controllers
             ICollection<Category> categories = new List<Category>();
 
             List<Category> cool = new List<Category>();
-
-            foreach (var item in catlist)
+            if (componentType.Categories != null)
             {
-                cool = _context.Categories.Select(a => a).Where(a => a.Name == item).ToList();
+                var catlist = componentType.Categories.Split(",");
 
-                if (!cool.Any())
+                foreach (var item in catlist)
                 {
-                    var aCat = new Category
+                    cool = _context.Categories.Select(a => a).Where(a => a.Name == item).ToList();
+
+                    if (!cool.Any())
                     {
-                        Name = item,
-                    };
+                        var aCat = new Category
+                        {
+                            Name = item,
+                        };
 
-                    categories.Add(aCat);
-                    _context.Add(aCat);
-                }
-                else
-                {
-                    //TODO lol :) hacks
-                    categories.Add(cool.First());
-                }
+                        categories.Add(aCat);
+                        _context.Add(aCat);
+                    }
+                    else
+                    {
+                        //TODO lol :) hacks
+                        categories.Add(cool.First());
+                    }
 
+                }
             }
             await _context.SaveChangesAsync();
 
@@ -171,12 +173,42 @@ namespace EmbeddedStockByPros.Controllers
                 return NotFound();
             }
 
-            var componentType = await _context.ComponentTypes.SingleOrDefaultAsync(m => m.ComponentTypeId == id);
+            var componentType = await _context.ComponentTypes
+                .Include(m => m.CategoryComponenttypebindings)
+                .ThenInclude(m => m.Category)
+                .SingleOrDefaultAsync(m => m.ComponentTypeId == id);
+
             if (componentType == null)
             {
                 return NotFound();
             }
-            return View(componentType);
+
+            var tmp = new ComponenttypeVM();
+
+            tmp.AdminComment = componentType.AdminComment;
+            tmp.ComponentInfo = componentType.ComponentInfo;
+            tmp.ComponentName = componentType.ComponentName;
+            tmp.ComponentTypeId = componentType.ComponentTypeId;
+            tmp.Datasheet = componentType.Datasheet;
+            tmp.ImageUrl = componentType.ImageUrl;
+            tmp.Manufacturer = componentType.Manufacturer;
+            tmp.Status = componentType.Status;
+            tmp.WikiLink = componentType.WikiLink;
+            tmp.Location = componentType.Location;
+
+            string cats = "";
+
+            if(componentType.CategoryComponenttypebindings.Count > 0) { 
+            foreach (var item in componentType.CategoryComponenttypebindings)
+            {
+                cats += item.Category.Name + ",";
+            }
+
+            cats = cats.Remove(cats.Length - 1);
+            }
+            tmp.Categories = cats;
+
+            return View(tmp);
         }
 
         // POST: ComponentTypes/Edit/5
@@ -184,23 +216,93 @@ namespace EmbeddedStockByPros.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ComponentTypeId,ComponentName,ComponentInfo,Location,Status,Datasheet,ImageUrl,Manufacturer,WikiLink,AdminComment")] ComponentType componentType)
+        public async Task<IActionResult> Edit(long id, ComponenttypeVM componentType)
         {
             if (id != componentType.ComponentTypeId)
             {
                 return NotFound();
             }
 
+
             if (ModelState.IsValid)
             {
+
+
+                var tmp = _context.ComponentTypes
+                    .Include(a => a.CategoryComponenttypebindings)
+                    .SingleOrDefault(m => m.ComponentTypeId == id);
+
+                tmp.ComponentTypeId = componentType.ComponentTypeId;
+                tmp.ComponentName = componentType.ComponentName;
+                tmp.AdminComment = componentType.AdminComment;
+                tmp.Datasheet = componentType.Datasheet;
+                tmp.ComponentInfo = componentType.ComponentInfo;
+                tmp.ImageUrl = componentType.ImageUrl;
+                tmp.Location = componentType.Location;
+                tmp.Status = componentType.Status;
+                tmp.Manufacturer = componentType.Manufacturer;
+                tmp.WikiLink = componentType.WikiLink;
+
+                ICollection<Category> categories = new List<Category>();
+                List<Category> cool = new List<Category>();
+
+                if (componentType.Categories != null)
+                {
+                    var catlist = componentType.Categories.Split(",");
+
+
+
+
+                    foreach (var item in catlist)
+                    {
+                        cool = _context.Categories.Select(a => a).Where(a => a.Name == item).ToList();
+
+                        if (!cool.Any())
+                        {
+                            var aCat = new Category
+                            {
+                                Name = item,
+                            };
+
+                            categories.Add(aCat);
+                            _context.Add(aCat);
+                        }
+                        else
+                        {
+                            //TODO lol :) hacks
+                            categories.Add(cool.First());
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+
+                tmp.CategoryComponenttypebindings.Clear();
+                await _context.SaveChangesAsync();
+
+                foreach (var item in categories)
+                {
+                    var free = new CategoryComponenttypebinding()
+                    {
+                        CategoryId = item.CategoryId,
+                        ComponentTypeId = tmp.ComponentTypeId,
+                        Category = item,
+                        ComponentType = tmp
+                    };
+
+                    _context.Add(free);
+
+                    tmp.CategoryComponenttypebindings.Add(free);
+                    item.CategoryComponenttypebindings.Add(free);
+                }
                 try
                 {
-                    _context.Update(componentType);
+                    _context.Update(tmp);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ComponentTypeExists(componentType.ComponentTypeId))
+                    if (!ComponentTypeExists(tmp.ComponentTypeId))
                     {
                         return NotFound();
                     }
@@ -213,6 +315,58 @@ namespace EmbeddedStockByPros.Controllers
             }
             return View(componentType);
         }
+
+        
+        public async Task<IActionResult> listComponentTypeFromCategory(string name)
+        {
+            var nameList = _context.Categories.Select(data => data.Name).ToList();
+            List<ComponentType> returnList = new List<ComponentType>();
+           
+            foreach (var dbname in nameList)
+            {
+                if (dbname == name)
+                {
+                    returnList = _context.CategoryComponenttypebindings.Select(data => data.ComponentType).ToList();
+                    break;
+                }
+            }
+            if (returnList.Count != 0) 
+            {
+                return View(returnList);
+            }
+
+            return View(returnList);
+
+
+
+            //ViewData["categoryName"] = String.IsNullOrEmpty(name) ? "Arduino" : "";
+            //var items = from Category in _context.Categories select name;
+
+            //var viewlist = new List<ComponentType>();
+
+            //    var hewoui = _context.CategoryComponenttypebindings.ToList();
+
+            //    var tmp = _context.ComponentTypes
+            //        .Include(data => data.CategoryComponenttypebindings)
+            //        .ThenInclude(data => data.Category)
+            //        .ToList();
+
+            //    foreach (var item in tmp)
+            //    {
+            //        foreach (var item2 in item.CategoryComponenttypebindings)
+            //        {
+            //            if (item2.Category.Name == name)
+            //            {
+            //                viewlist.Add(item);
+            //            }
+            //        }
+            //    }
+
+            //return View(viewlist);
+
+        }
+       
+
 
         // GET: ComponentTypes/Delete/5
         public async Task<IActionResult> Delete(long? id)
