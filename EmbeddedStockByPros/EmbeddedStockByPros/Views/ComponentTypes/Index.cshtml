@@ -1,4 +1,5 @@
-﻿@model IEnumerable<EmbeddedStockByPros.Models.ComponentType>
+﻿
+@model IEnumerable<EmbeddedStockByPros.Models.ComponentType>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,6 +10,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<p><a asp-action="listComponentTypeFromCategory">List of components from Category</a></p>
 <table class="table">
     <thead>
         <tr>

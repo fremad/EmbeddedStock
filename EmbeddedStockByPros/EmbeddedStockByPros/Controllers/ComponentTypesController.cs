@@ -213,6 +213,58 @@ namespace EmbeddedStockByPros.Controllers
             return View(componentType);
         }
 
+        
+        public async Task<IActionResult> listComponentTypeFromCategory(string name)
+        {
+            var nameList = _context.Categories.Select(data => data.Name).ToList();
+            List<ComponentType> returnList = new List<ComponentType>();
+           
+            foreach (var dbname in nameList)
+            {
+                if (dbname == name)
+                {
+                    returnList = _context.CategoryComponenttypebindings.Select(data => data.ComponentType).ToList();
+                    break;
+                }
+            }
+            if (returnList.Count != 0) 
+            {
+                return View(returnList);
+            }
+
+            return View(returnList);
+
+
+
+            //ViewData["categoryName"] = String.IsNullOrEmpty(name) ? "Arduino" : "";
+            //var items = from Category in _context.Categories select name;
+
+            //var viewlist = new List<ComponentType>();
+
+            //    var hewoui = _context.CategoryComponenttypebindings.ToList();
+
+            //    var tmp = _context.ComponentTypes
+            //        .Include(data => data.CategoryComponenttypebindings)
+            //        .ThenInclude(data => data.Category)
+            //        .ToList();
+
+            //    foreach (var item in tmp)
+            //    {
+            //        foreach (var item2 in item.CategoryComponenttypebindings)
+            //        {
+            //            if (item2.Category.Name == name)
+            //            {
+            //                viewlist.Add(item);
+            //            }
+            //        }
+            //    }
+
+            //return View(viewlist);
+
+        }
+       
+
+
         // GET: ComponentTypes/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
