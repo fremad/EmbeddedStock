@@ -1,0 +1,34 @@
+﻿@model IEnumerable<EmbeddedStockByPros.Models.ComponentType>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>List of components by type</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ComponentTypeId)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ComponentTypeId)
+                </td>
+                
+                <td>
+                    <a asp-action="ListById" asp-route-id="@item.ComponentTypeId">See list</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

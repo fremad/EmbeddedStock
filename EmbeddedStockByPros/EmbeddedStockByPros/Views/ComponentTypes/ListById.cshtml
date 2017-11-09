@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Component>
+    @{
+        ViewData["Title"] = "ListById";
+    }
+    <h2>List of components</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ComponentId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ComponentNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserComment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AdminComment)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ComponentId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ComponentNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserComment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AdminComment)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

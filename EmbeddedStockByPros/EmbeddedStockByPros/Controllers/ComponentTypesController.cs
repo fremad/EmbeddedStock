@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -240,6 +241,18 @@ namespace EmbeddedStockByPros.Controllers
             _context.ComponentTypes.Remove(componentType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: ComponentsComponentsType
+        public async Task<IActionResult> List()
+        {
+            return View(await _context.ComponentTypes.ToListAsync());
+        }
+
+        public async Task<IActionResult> ListById(long? id)
+        {
+            var components = await _context.Components.Where(x => x.ComponentTypeId == id).ToListAsync();
+            return View(components);
         }
 
         private bool ComponentTypeExists(long id)
