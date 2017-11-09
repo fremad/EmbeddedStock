@@ -1,4 +1,4 @@
-﻿@model EmbeddedStockByPros.Models.ComponentType
+﻿@model EmbeddedStockByPros.ViewModels.ComponenttypeVM;
 
 @{
     ViewData["Title"] = "Edit";
@@ -24,13 +24,18 @@
                 <span asp-validation-for="ComponentInfo" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Categories"></label>
+                <input asp-for="Categories" placeholder="Categories(Commaseperated)" class="form-control" />
+                <span asp-validation-for="Categories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Location" class="control-label"></label>
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<ComponentStatus>()" class="form-control"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">

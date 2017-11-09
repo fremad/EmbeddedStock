@@ -9,6 +9,7 @@ namespace EmbeddedStockByPros.ViewModels
 {
     public class ComponenttypeVM
     {
+        public long ComponentTypeId { get; set; }
         public string ComponentName { get; set; }
         public string ComponentInfo { get; set; }
         public string Location { get; set; }
