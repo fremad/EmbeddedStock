@@ -67,7 +67,7 @@ namespace EmbeddedStockByPros.Controllers
             //todo rename kjal
             var kjal = new ESImage();
 
-            if (componentType.Image.Length > 0)
+            if (componentType.Image != null && componentType.Image.Length > 0)
             {
                 var fileName = ContentDispositionHeaderValue.Parse(componentType.Image.ContentDisposition).FileName.Trim('"');
 
