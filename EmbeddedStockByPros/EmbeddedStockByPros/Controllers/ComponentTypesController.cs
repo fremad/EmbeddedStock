@@ -319,25 +319,33 @@ namespace EmbeddedStockByPros.Controllers
         
         public async Task<IActionResult> listComponentTypeFromCategory(string name)
         {
-            var nameList = _context.Categories.Select(data => data.Name).ToList();
+            //var nameList = _context.Categories.Select(data => data.Name).ToList();
+            var nameList = _context.ComponentTypes
+                .Include(a => a.CategoryComponenttypebindings)
+                .ThenInclude(a => a.Category)
+                .ToList();
+
+            //TODO slow solution, but okay
             List<ComponentType> returnList = new List<ComponentType>();
            
-            foreach (var dbname in nameList)
+            foreach (var item in nameList)
             {
-                if (dbname == name)
+                foreach (var item2 in item.CategoryComponenttypebindings)
                 {
-                    returnList = _context.CategoryComponenttypebindings.Select(data => data.ComponentType).ToList();
-                    break;
+                    if (item2.Category.Name == name)
+                    {
+                        returnList.Add(item);
+                    }
+
                 }
             }
+
             if (returnList.Count != 0) 
             {
                 return View(returnList);
             }
 
             return View(returnList);
-
-
 
             //ViewData["categoryName"] = String.IsNullOrEmpty(name) ? "Arduino" : "";
             //var items = from Category in _context.Categories select name;

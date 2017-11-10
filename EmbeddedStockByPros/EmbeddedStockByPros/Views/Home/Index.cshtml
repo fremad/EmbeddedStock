@@ -8,11 +8,11 @@
 
 <div class="container">
 
-    @foreach (var item in Model)
-    {
-        <h2>
-            @Html.DisplayFor(modelItem => item.ComponentName)
-        </h2>
-    }
-
+    <p>
+        <a asp-controller="ComponentTypes" asp-action="Create">Create New</a>
+    </p>
+    <p><a asp-controller="ComponentTypes" asp-action="listComponentTypeFromCategory">List of components by Category</a></p>
+    <p>
+        <a asp-controller="ComponentTypes" asp-action="List">List of components by ComponentType</a>
+    </p>
 </div>
