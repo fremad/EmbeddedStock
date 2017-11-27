@@ -79,7 +79,7 @@ namespace ExerciseMe.Controllers
         //    return Ok();
         //}
 
-        [HttpPost("jwtlogin")]
+        [HttpPost("login")]
         public async Task<IActionResult> JWTlogin([FromBody]DtoUser dtoUser)
         {
             var user = await _userManager.FindByEmailAsync(dtoUser.Email);
