@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExerciseMe.DAL;
 using ExerciseMe.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExerciseMe.Controllers
 {
     [Produces("application/json")]
     [Route("api/Workouts")]
+    [Authorize]
     public class WorkoutsController : Controller
     {
         private readonly AppDbContext _context;

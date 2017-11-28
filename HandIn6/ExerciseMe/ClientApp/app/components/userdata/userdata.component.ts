@@ -2,10 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 
 @Component({
-    selector: 'fetchdata',
-    templateUrl: './fetchdata.component.html'
+    selector: 'userdata',
+    templateUrl: './userdata.component.html'
 })
-export class FetchDataComponent {
+export class UserDataComponent {
     public forecasts: WeatherForecast[];
 
     constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {

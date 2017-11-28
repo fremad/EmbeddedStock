@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'counter',
-    templateUrl: './counter.component.html'
+    selector: 'workout',
+    templateUrl: './workout.component.html'
 })
-export class CounterComponent {
+export class WorkoutComponent {
     public currentCount = 0;
 
     public incrementCounter() {

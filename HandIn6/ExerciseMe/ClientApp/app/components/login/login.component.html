@@ -1,0 +1,8 @@
+﻿
+<form class="example-form" (ngSubmit)="login()">
+    <input type="text" placeholder="Email" name="email" [(ngModel)]="user.email">
+    <input mdInput type="password" name="password" [(ngModel)]="user.password" placeholder="Password">
+    <button md-button type="submit">Login</button>
+    <!--<a routerLink="/register"><button md-button>Register!</button> </a>-->
+    <p *ngIf="message">{{message}}</p>
+</form>

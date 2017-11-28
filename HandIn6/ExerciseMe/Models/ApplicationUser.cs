@@ -24,6 +24,7 @@ namespace ExerciseMe.Models
             Exercises = new List<Exercise>();
         }
 
+        public ApplicationUser OwnerApplicationUser { get; set; }
         public string ID { get; set; }
         public string Name { get; set; }
         public List<Exercise> Exercises { get; set; }
@@ -36,6 +37,7 @@ namespace ExerciseMe.Models
         public string Description { get; set; }
         public int Sets { get; set; }
         public int Reps { get; set; }
+        public Workout Workout { get; set; }
     } 
 
 }
