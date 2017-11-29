@@ -17,8 +17,10 @@ export class AuthService {
 
     constructor(private http: Http) {
         // set token if saved in local storage
-        const currentUser = JSON.parse(String(localStorage.getItem('currentUser')));
-        this.token = currentUser && currentUser.token;
+        if (typeof localStorage !== 'undefined') {
+            const currentUser = JSON.parse(String(localStorage.getItem('currentUser')));
+            this.token = currentUser && currentUser.token;
+        }
     }
 
     // store the URL so we can redirect after logging in
@@ -59,7 +61,7 @@ export class AuthService {
     }
 
     logout(): void {
-        localStorage.removeItem(tokenName);
+       localStorage.removeItem(tokenName);
     }
 
     register(user: User): Observable<boolean> {
@@ -87,14 +89,19 @@ export class AuthService {
     }
 
     private saveToken(token: string) {
-        window.localStorage.setItem(tokenName, JSON.stringify({ token: token }));
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem(tokenName, JSON.stringify({ token: token }));
+        }
     }
 
     private getToken() {
-        if (localStorage.getItem(tokenName)) {
-            return localStorage.getItem(tokenName);
-        } else {
-            return '';
+        if (typeof localStorage !== 'undefined') {
+            if (localStorage.getItem(tokenName)) {
+                return localStorage.getItem(tokenName);
+            } else {
+                return '';
+           }
         }
+        return '';
     }
 }

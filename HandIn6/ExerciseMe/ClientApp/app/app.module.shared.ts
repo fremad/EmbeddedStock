@@ -18,8 +18,8 @@ import { AuthService } from './components/services/auth.service';
 const approutes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
-    { path: 'workout', component: WorkoutComponent, canActivate: [AuthGuard] },
-    { path: 'userdata', component: UserDataComponent },
+    { path: 'workout', component: WorkoutComponent },
+    { path: 'userdata', component: UserDataComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: '**', redirectTo: 'home' }
 ]

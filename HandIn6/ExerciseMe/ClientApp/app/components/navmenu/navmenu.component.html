@@ -27,6 +27,11 @@
                         <span class='glyphicon glyphicon-th-list'></span> My Data
                     </a>
                 </li>
+                <li [routerLinkActive]="['link-active']" *ngIf="isLoggedIn">
+                    <a (click)="logout()" href="">
+                        <span class='glyphicon glyphicon-th-list'></span> Logout
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

@@ -13,7 +13,7 @@ namespace ExerciseMe.Controllers
 {
     [Produces("application/json")]
     [Route("api/Workouts")]
-    [Authorize]
+    //[Authorize]
     public class WorkoutsController : Controller
     {
         private readonly AppDbContext _context;
@@ -85,6 +85,7 @@ namespace ExerciseMe.Controllers
         }
 
         // POST: api/Workouts
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> PostWorkout([FromBody] Workout workout)
         {
