@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace ExerciseMe
 {
@@ -29,7 +30,9 @@ namespace ExerciseMe
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
 
             var connection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MyLocalDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));

@@ -67,24 +67,33 @@ export class AuthService {
     register(user: User): Observable<boolean> {
         // console.log(name, email, password);
         return this.http.post
-            ('http://localhost:3000/api/Register', { name: user.name, email: user.email, password: user.password })
+            ('http://localhost:8000/api/Account/Register', { name: user.name, email: user.email, password: user.password })
             .map((response: Response) => {
-                console.log(response);
-                // login successful if there's a jwt token in the response
-                const token = response.json() && response.json().token;
-                if (token) {
-                    // set token property
-                    this.token = token;
 
-                    // store username and jwt token in local storage to keep user logged in between page refreshes
-                    this.saveToken(token);
-                    // localStorage.setItem('currentUser', JSON.stringify({ name: user.name, token: token }));
-                    // return true to indicate successful login
+                console.log(response);
+
+                if (response.ok) {
                     return true;
                 } else {
-                    // return false to indicate failed login
                     return false;
                 }
+
+
+                //// login successful if there's a jwt token in the response
+                //const token = response.text();
+                //if (token) {
+                //    // set token property
+                //    this.token = token;
+
+                //    // store username and jwt token in local storage to keep user logged in between page refreshes
+                //    this.saveToken(token);
+                //    // localStorage.setItem('currentUser', JSON.stringify({ name: user.name, token: token }));
+                //    // return true to indicate successful login
+                //    return true;
+                //} else {
+                //    // return false to indicate failed login
+                //    return false;
+                //}
             });
     }
 

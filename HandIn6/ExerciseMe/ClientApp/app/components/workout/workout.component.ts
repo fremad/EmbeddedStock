@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkoutService } from '../services/workout.service'
+import { Workout } from '../models/workout'
 
 @Component({
     selector: 'workout',
@@ -8,9 +9,12 @@ import { WorkoutService } from '../services/workout.service'
 })
 export class WorkoutComponent implements OnInit {
 
+    workouts: Workout[];
+
     ngOnInit(): void {
         this.workoutservice.getWorkouts().subscribe(data => {
             console.log(data);
+            //this.workouts = data
         });
     }
 

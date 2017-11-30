@@ -14,6 +14,8 @@ namespace ExerciseMe.DAL
         {
         }
 
+     
+
         public DbSet<ExerciseMe.Models.ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Workout> Workouts { get; set; }
         public DbSet<Exercise> Exercises { get; set; }

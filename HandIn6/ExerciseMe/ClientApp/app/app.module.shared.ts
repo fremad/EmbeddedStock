@@ -11,6 +11,7 @@ import { UserDataComponent } from './components/userdata/userdata.component';
 import { WorkoutComponent } from './components/workout/workout.component';
 import { AuthGuard } from './components/services/auth-guard.service';
 import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent} from './components/register/register.component';
 import { AuthService } from './components/services/auth.service';
 
 
@@ -21,6 +22,7 @@ const approutes: Routes = [
     { path: 'workout', component: WorkoutComponent },
     { path: 'userdata', component: UserDataComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
     { path: '**', redirectTo: 'home' }
 ]
 
@@ -32,7 +34,8 @@ const approutes: Routes = [
         WorkoutComponent,
         UserDataComponent,
         HomeComponent,
-        LoginComponent
+        LoginComponent,
+        RegisterComponent
     ],
     imports: [
         CommonModule,

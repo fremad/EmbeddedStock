@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -37,6 +38,8 @@ namespace ExerciseMe.Models
         public string Description { get; set; }
         public int Sets { get; set; }
         public int Reps { get; set; }
+
+        [ForeignKey("WorkoutForeignKey")]
         public Workout Workout { get; set; }
     } 
 

@@ -8,6 +8,6 @@
         <input class="form-control" id="password" type="password" name="password" [(ngModel)]="user.password" placeholder="Password">
     </div>
     <button class="btn btn-primary" type="submit">Login</button>
-    <!--<a routerLink="/register"><button md-button>Register!</button> </a>-->
+    <a routerLink="/register"><button class="btn btn-info">Register!</button> </a>
     <p *ngIf="message">{{message}}</p>
 </form>

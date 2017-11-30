@@ -1,23 +1,28 @@
 import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
+import { WorkoutService } from '../services/workout.service'
+import { Workout } from '../models/workout'
+
 
 @Component({
     selector: 'userdata',
-    templateUrl: './userdata.component.html'
+    templateUrl: './userdata.component.html',
+    providers: [WorkoutService]
 })
 export class UserDataComponent {
-    public forecasts: WeatherForecast[];
 
-    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
-        http.get(baseUrl + 'api/SampleData/WeatherForecasts').subscribe(result => {
-            this.forecasts = result.json() as WeatherForecast[];
-        }, error => console.error(error));
+
+    constructor(private workoutservice: WorkoutService) {}
+
+    workout = new Workout();
+
+    addWorkout() {
+        if (this.workout) {
+            this.workoutservice.addUserWorkout(this.workout).subscribe((mydata) => {
+
+            });
+        }
+
     }
 }
 
-interface WeatherForecast {
-    dateFormatted: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
-}

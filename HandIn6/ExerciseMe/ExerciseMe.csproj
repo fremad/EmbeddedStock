@@ -26,11 +26,15 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\login\login.component.ts" />
+    <None Remove="ClientApp\app\components\models\workout.ts" />
+    <None Remove="ClientApp\app\components\register\register.component.ts" />
     <None Remove="ClientApp\app\components\services\auth-guard.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\models\workout.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\register\register.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\services\auth-guard.service.ts" />
   </ItemGroup>
 

@@ -25,11 +25,21 @@ namespace ExerciseMe.Controllers
 
         // GET: api/Workouts
         [HttpGet]
-        public IEnumerable<Workout> GetWorkouts()
+        public async Task<IActionResult> GetWorkouts()
         {
-            return _context.Workouts;
+            
+            var hep = await _context.Workouts.Include(e => e.Exercises).ToListAsync();
+            return Json(hep);
         }
 
+        //.Select(p => new
+        //{
+        //    ID = p.ID,
+        //    Description = p.Description,
+        //    Name = p.Name,
+        //    Reps = p.Reps,
+        //    Sets = p.Sets
+        //}))
         // GET: api/Workouts/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWorkout([FromRoute] string id)
