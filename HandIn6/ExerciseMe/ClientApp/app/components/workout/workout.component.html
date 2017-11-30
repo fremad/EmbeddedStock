@@ -1,9 +1,10 @@
 <h1> Workouts </h1>  
 
-<!--<div *ngFor="let item of workouts" class="col-md-4">
+<div *ngFor="let item of workouts" class="col-md-4" [class.selected]="item === selectedWorkout"
+     (click)="onSelect(item)">
     <h6>{{item.name}}</h6> 
-    <p *ngFor="let tmp of item.exercises">
-        {{tmp.name}} {{tmp.description}} {{tmp.exsets}} {{tmp.reps}}
-    </p>
+    
     <hr>
-</div>-->
+</div>
+
+<exercise [workout]="selectedWorkout"></exercise>

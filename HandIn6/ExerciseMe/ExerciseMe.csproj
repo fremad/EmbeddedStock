@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\components\exercise\exercise.component.ts" />
     <None Remove="ClientApp\app\components\login\login.component.ts" />
     <None Remove="ClientApp\app\components\models\workout.ts" />
     <None Remove="ClientApp\app\components\register\register.component.ts" />
@@ -32,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\exercise\exercise.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\models\workout.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\register\register.component.ts" />

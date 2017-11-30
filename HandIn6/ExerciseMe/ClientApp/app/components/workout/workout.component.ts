@@ -10,19 +10,21 @@ import { Workout } from '../models/workout'
 export class WorkoutComponent implements OnInit {
 
     workouts: Workout[];
+    selectedWorkout: Workout;
+
 
     ngOnInit(): void {
         this.workoutservice.getWorkouts().subscribe(data => {
             console.log(data);
-            //this.workouts = data
+            this.workouts = data;
         });
     }
 
     constructor(private workoutservice: WorkoutService) {  }
 
-    public currentCount = 0;
-
-    public incrementCounter() {
-        this.currentCount++;
+    onSelect(workout: Workout): void {
+        this.selectedWorkout = workout;
     }
+
+
 }

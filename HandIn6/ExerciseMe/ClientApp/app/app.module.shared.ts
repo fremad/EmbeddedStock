@@ -13,7 +13,7 @@ import { AuthGuard } from './components/services/auth-guard.service';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent} from './components/register/register.component';
 import { AuthService } from './components/services/auth.service';
-
+import { ExerciseComponent } from './components/exercise/exercise.component';
 
 
 const approutes: Routes = [
@@ -35,7 +35,8 @@ const approutes: Routes = [
         UserDataComponent,
         HomeComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        ExerciseComponent
     ],
     imports: [
         CommonModule,

@@ -10,10 +10,9 @@ export class WorkoutService {
     constructor(private http: Http) { }
 
     getWorkouts() {
-        return this.http.get('http://localhost:8000/api/Workouts').switchMap(data => {
+        return this.http.get('http://localhost:8000/api/Workouts').map(data => {
             console.log(data);
-            console.log("WHHATTTT!");
-
+           
             return data.json();
         });
     }
@@ -37,6 +36,26 @@ export class WorkoutService {
                     headers: headers
                 }).map(data => {
                 console.log(data);
+                return data.json();
+            });
+    }
+
+    addExercise(exercise: Exercise) {
+        console.log('called addExercise');
+
+        var token = "Bearer " + JSON.parse(((localStorage.getItem('currentUser'))) as any).token;
+
+        token = token.split('"').join('');
+        console.log(token);
+
+        const headers = new Headers({
+            'Authorization': token
+        });
+
+        return this.http
+            .post('http://localhost:8000/api/Exercises', exercise, {
+                headers: headers
+            }).map(data => {
                 return data.json();
             });
     }

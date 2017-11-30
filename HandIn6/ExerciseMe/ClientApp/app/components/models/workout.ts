@@ -1,13 +1,14 @@
 ﻿export class Exercise {
-    _id: string;
-    exercise: string;
+    id: string;
+    name: string;
     description: string;
-    exset: number;
+    sets: number;
     reps: number;
+    workout: string;
 }
 
 export class Workout {
-    _id: string;
+    id: string;
     name: string;
     exercises: Exercise[];
     workoutDate: Date;

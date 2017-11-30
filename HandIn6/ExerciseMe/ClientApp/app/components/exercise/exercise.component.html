@@ -1,0 +1,23 @@
+﻿<div *ngIf="workout">
+    
+    <p *ngFor="let tmp of workout.exercises">
+        {{tmp.name}} {{tmp.description}} {{tmp.exsets}} {{tmp.reps}}
+    </p>
+
+    <form (ngSubmit)="onSubmit()">
+
+        <input type="text" placeholder="Exercise Name..." name="name" [(ngModel)]="exercise.name">
+
+        <input type="text" placeholder="Exercise description..." name="description" [(ngModel)]="exercise.description">
+
+        <input type="number" placeholder="Exercise sets..." name="sets" [(ngModel)]="exercise.sets">
+
+        <input type="number" placeholder="Exercise reps..." name="reps" [(ngModel)]="exercise.reps">
+
+
+
+        <button class="btn btn-default" type="submit">Add Exercise</button>
+    </form>
+
+
+</div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using ExerciseMe.DAL;
 using ExerciseMe.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Primitives;
 
 namespace ExerciseMe.Controllers
 {
@@ -24,22 +26,30 @@ namespace ExerciseMe.Controllers
         }
 
         // GET: api/Workouts
-        [HttpGet]
-        public async Task<IActionResult> GetWorkouts()
-        {
+        //[HttpGet]
+        //public async Task<IActionResult> GetWorkouts()
+        //{
             
-            var hep = await _context.Workouts.Include(e => e.Exercises).ToListAsync();
-            return Json(hep);
+        //    var hep = await _context.Workouts
+        //        .Include(e => e.Exercises).ToListAsync();
+        //    return Json(hep);
+        //}
+        // GET: api/Workouts
+        [HttpGet]
+        public async Task<IActionResult> GetMyWorkouts()
+        {
+            StringValues hep = "";
+            HttpContext.Request.Headers.TryGetValue("Authorization", out hep);
+            var tmp = hep.ToString().Split(" ").ElementAt(1);
+            var jwtHandler = new JwtSecurityTokenHandler();
+            var useremail = jwtHandler.ReadJwtToken(tmp).Claims.ElementAt(0).Value; 
+
+
+
+            var cool = await _context.Workouts.Where(a => a.OwnerApplicationUser.Email == useremail).Include(e => e.Exercises).ToListAsync();
+            return Json(cool);
         }
 
-        //.Select(p => new
-        //{
-        //    ID = p.ID,
-        //    Description = p.Description,
-        //    Name = p.Name,
-        //    Reps = p.Reps,
-        //    Sets = p.Sets
-        //}))
         // GET: api/Workouts/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetWorkout([FromRoute] string id)
@@ -103,6 +113,21 @@ namespace ExerciseMe.Controllers
             {
                 return BadRequest(ModelState);
             }
+            StringValues hep = "";
+            HttpContext.Request.Headers.TryGetValue("Authorization", out hep);
+
+            var tmp = hep.ToString().Split(" ").ElementAt(1);
+
+            
+
+            var jwtHandler = new JwtSecurityTokenHandler();
+
+
+            var useremail = jwtHandler.ReadJwtToken(tmp).Claims.ElementAt(0).Value;
+
+            var user =_context.ApplicationUser.Single(a => a.Email == useremail);
+
+            workout.OwnerApplicationUser = user;
 
             _context.Workouts.Add(workout);
             await _context.SaveChangesAsync();
